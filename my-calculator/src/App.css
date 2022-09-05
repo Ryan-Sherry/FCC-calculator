@@ -1,38 +1,97 @@
-.App {
-  text-align: center;
+html{
+  height:100%;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-image: url("./KlqS3t.jpg");
+  background-size: 100% 100%;
 }
 
-.App-link {
-  color: #61dafb;
+#calculator {
+  width: 25%;
+  height: 70%;
+  background-color: rgb(255, 191, 73);
+  border-radius: 25px;
+  display: grid;
+  grid-template-rows: 2fr 5fr;
+  border:solid 3px black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#display-wrapper {
+  width: 100%;
+  height: 100%;
+  border-bottom: solid 2px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen {
+  width: 85%;
+  height: 65%;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border:solid 2px black;
+}
+
+#button-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#keypad {
+  width:85%;
+  height:80%;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  border:solid 1px black;
+}
+
+#row1 {
+  width: 100%;
+  height: 100%;
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+#row2 {
+  width: 100%;
+  height: 100%;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+#row3 {
+  width: 100%;
+  height: 100%;
+  display:grid;
+  grid-template-columns: 1fr 1fr 2fr;
+}
+
+button {
+  background-color: rgb(255, 200, 137);
+  border: solid 1px black;
+}
+
+#clear {
+  background-color: rgb(255, 124, 124);
+}
+
+#equals {
+  background-color: rgb(145, 253, 239);
 }

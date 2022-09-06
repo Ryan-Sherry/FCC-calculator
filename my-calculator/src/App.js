@@ -2,11 +2,18 @@ import React from 'react';
 import './App.css';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentValue: 0,
+      formula: "hello"
+    }
+  }
   render() {
     return (
       <div id='wrapper'>
         <div id="calculator">
-          <Display />
+          <Display output={this.state.currentValue} input={this.state.formula} />
           <Buttons />
         </div>
       </div>
@@ -17,7 +24,10 @@ class App extends React.Component {
 const Display = (props) => {
   return (
     <div id="display-wrapper">
-      <div id="screen"></div>
+      <div id="display">
+        <div id="input">{props.input}</div>
+        <div id="output">{props.output}</div>
+      </div>
     </div>
   )
 }

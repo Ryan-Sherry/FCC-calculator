@@ -26,7 +26,7 @@ class App extends React.Component {
 
       this.setState({
         formula: this.state.formula + value,
-        current: withZero,
+        current: this.state.formula + value,
         prev: this.state.formula
       });
   }

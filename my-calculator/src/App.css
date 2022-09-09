@@ -52,7 +52,7 @@ html {
   justify-content: center;
 }
 
-#display {
+#screen {
   width: 85%;
   height: 65%;
   background-color: rgb(255, 255, 255);
@@ -62,14 +62,14 @@ html {
   grid-template-rows: 2fr 3fr;
 }
 
-#input {
+#output {
   text-align: right;
   padding-top: 8px;
   padding-right: 15px;
   font-family: digital;
 }
 
-#output {
+#display {
   text-align: right;
   padding-top: 10px;
   padding-right: 15px;

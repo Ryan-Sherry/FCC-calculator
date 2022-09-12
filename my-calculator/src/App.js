@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 
-const isOperator = /[x/+‑]/,
-  isNumber = /[0-9]/,
-  endsWithOperator = /[x+‑/]$/,
-  endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
+const isOperator = /[*/+‑]/,
+  endsWithOperator = /[*+‑/]$/,
+  endsWithNegativeSign = /\d[*/+‑]{1}‑$/,
   startsWithZero = /^0/
 
 class App extends React.Component {
@@ -57,7 +56,7 @@ class App extends React.Component {
         evaluated: false,
         prev: current,
         current: value,
-        formula: prev + value
+        formula: current + value
       })
     } else {
       this.setState({

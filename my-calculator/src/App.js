@@ -16,6 +16,7 @@ class App extends React.Component {
     }
     this.numberClick = this.numberClick.bind(this);
     this.operatorClick = this.operatorClick.bind(this);
+    this.decimalClick = this.decimalClick.bind(this);
     this.allClear = this.allClear.bind(this);
     this.getAnswer = this.getAnswer.bind(this);
     this.percentage = this.percentage.bind(this);
@@ -32,16 +33,34 @@ class App extends React.Component {
             ? value
             : formula
           : /([^.0-9]0|^0)$/.test(formula)
-          ? formula.slice(0, -1) + value
-          : formula + value
+            ? formula.slice(0, -1) + value
+            : formula + value
               });
   }
 
   operatorClick(e) {
     const value = e.target.value;
+    const { prev, current, formula } = this.state;
     this.setState({
-     
     })
+  }
+
+  decimalClick(e) {
+    const value = e.target.value;
+    const { prev, current, formula } = this.state;
+    if(current.includes("."))
+       {this.setState ({
+          prev: current,
+          current: current,
+          formula: formula
+      })
+     } else {
+        this.setState ({
+          prev: current,
+          current: current + value,
+          formula: formula + value
+      })
+      }
   }
 
   allClear() {
@@ -51,12 +70,12 @@ class App extends React.Component {
       formula: ""
     })
   }
-
+  
   percentage() {
     let value = this.state.formula;
     this.setState({
       current: eval(value/100),
-      formula: value + "%" + "="
+      formula: value + "%" + "=",
     })
   }
 
@@ -105,7 +124,7 @@ class App extends React.Component {
                 <button onClick={this.operatorClick} id="subtract" value={"-"}>-</button>
               </div>
               <div id="row3">
-                <button onClick={this.handleClick} id="decimal">.</button>
+                <button onClick={this.decimalClick} id="decimal" value={"."}>.</button>
                 <button onClick={this.numberClick} id="zero" value={"0"}>0</button>
                 <button onClick={this.getAnswer} id="equals">=</button>
               </div>

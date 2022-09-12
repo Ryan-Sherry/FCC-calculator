@@ -13,7 +13,8 @@ class App extends React.Component {
     this.state = {
       current: "0",
       prev: "",
-      formula: ""
+      formula: "",
+      evaluated: false
     }
     this.numberClick = this.numberClick.bind(this);
     this.operatorClick = this.operatorClick.bind(this);
@@ -25,27 +26,45 @@ class App extends React.Component {
 
   numberClick(e) {
     const value = e.target.value
-    const { current, formula } = this.state;
-      this.setState({
-        current: startsWithZero.test(current) ? value : current + value,
-        formula: current === 0 && value === 0
-          ? formula === ""
-            ? value
-            : formula
-          : /([^.0-9]0|^0)$/.test(formula)
-            ? formula.slice(0, -1) + value
-            : formula + value
-              });
+    const { current, formula, evaluated } = this.state;
+      if(evaluated) {
+        this.setState({
+          evaluated: false,
+          prev: current,
+          current: value,
+          formula: value
+        })
+      } else {
+        this.setState({
+          current: startsWithZero.test(current) ? value : current + value,
+          formula: current === 0 && value === 0
+            ? formula === ""
+              ? value
+              : formula
+            : /([^.0-9]0|^0)$/.test(formula)
+              ? formula.slice(0, -1) + value
+              : formula + value
+                });
+      }
+      
   }
 
   operatorClick(e) {
     const value = e.target.value;
-    const { current, formula } = this.state;
-    this.setState({
-      prev: current,
-      current: value,
-      formula: formula + value
-    })
+    const { current, formula, evaluated } = this.state;
+    if(evaluated) {
+      this.setState({
+        prev: current,
+        current: value,
+        formula: current + value
+      })
+    } else {
+      this.setState({
+        prev: current,
+        current: value,
+        formula: formula + value
+      })
+    }
   }
 
   decimalClick(e) {
@@ -89,7 +108,8 @@ class App extends React.Component {
       this.setState({
         current: answer.toString(),
         formula: expression + "=" + answer,
-        prev: answer
+        prev: answer,
+        evaluated: true
       })
   }
 

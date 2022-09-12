@@ -51,12 +51,13 @@ class App extends React.Component {
 
   operatorClick(e) {
     const value = e.target.value;
-    const { current, formula, evaluated } = this.state;
+    const { prev, current, formula, evaluated } = this.state;
     if(evaluated) {
       this.setState({
+        evaluated: false,
         prev: current,
         current: value,
-        formula: current + value
+        formula: prev + value
       })
     } else {
       this.setState({

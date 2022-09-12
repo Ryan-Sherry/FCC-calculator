@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 const isOperator = /[x/+‑]/,
+  isNumber = /[0-9]/,
   endsWithOperator = /[x+‑/]$/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   startsWithZero = /^0/
@@ -24,9 +25,8 @@ class App extends React.Component {
 
   numberClick(e) {
     const value = e.target.value
-    const { prev, current, formula } = this.state;
+    const { current, formula } = this.state;
       this.setState({
-        prev: current,
         current: startsWithZero.test(current) ? value : current + value,
         formula: current === 0 && value === 0
           ? formula === ""
@@ -40,29 +40,30 @@ class App extends React.Component {
 
   operatorClick(e) {
     const value = e.target.value;
-    const { prev, current, formula } = this.state;
+    const { current, formula } = this.state;
     this.setState({
+      prev: current,
+      current: value,
+      formula: formula + value
     })
   }
 
   decimalClick(e) {
     const value = e.target.value;
-    const { prev, current, formula } = this.state;
+    const {current, formula } = this.state;
     if(current.includes("."))
        {this.setState ({
-          prev: current,
           current: current,
           formula: formula
       })
      } else {
         this.setState ({
-          prev: current,
           current: current + value,
           formula: formula + value
       })
       }
   }
-
+  
   allClear() {
     this.setState({
       current: 0,
@@ -75,7 +76,7 @@ class App extends React.Component {
     let value = this.state.formula;
     this.setState({
       current: eval(value/100),
-      formula: value + "%" + "=",
+      formula: `${value}% =`,
     })
   }
 
@@ -87,7 +88,7 @@ class App extends React.Component {
       let answer = eval(expression);
       this.setState({
         current: answer.toString(),
-        formula: expression + "=",
+        formula: expression + "=" + answer,
         prev: answer
       })
   }

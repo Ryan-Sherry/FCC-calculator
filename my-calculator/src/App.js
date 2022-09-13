@@ -50,7 +50,7 @@ class App extends React.Component {
 
   operatorClick(e) {
     const value = e.target.value;
-    const { prev, current, formula, evaluated } = this.state;
+    const { current, formula, evaluated } = this.state;
     if(evaluated) {
       this.setState({
         evaluated: false,
@@ -58,11 +58,17 @@ class App extends React.Component {
         current: value,
         formula: current + value
       })
+    } else if(endsWithOperator.test(formula)) {
+        this.setState({
+          prev: current,
+          current: value,
+          formula: (formula + current).slice(0, -2) + value
+        })
     } else {
-      this.setState({
-        prev: current,
-        current: value,
-        formula: formula + value
+        this.setState({
+          prev: current,
+          current: value,
+          formula: formula + value
       })
     }
   }

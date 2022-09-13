@@ -94,6 +94,7 @@ class App extends React.Component {
   percentage() {
     let value = this.state.formula;
     this.setState({
+      // eslint-disable-next-line
       current: eval(value/100),
       formula: `${value}% =`,
     })
@@ -104,6 +105,7 @@ class App extends React.Component {
     while(endsWithOperator.test(expression)) {
       expression = expression.slice(0, -1);
     }
+      // eslint-disable-next-line
       let answer = eval(expression);
       this.setState({
         current: answer.toString(),

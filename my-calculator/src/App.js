@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
 
-const isOperator = /[*/+‑]/,
-  endsWithOperator = /[*+‑/]$/,
-  endsWithNegativeSign = /\d[*/+‑]{1}‑$/,
-  startsWithZero = /^0/
+const noMinus= /[*/+]/,
+  endsWithOperator = /[*+/-]$/,
+  endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
+  startsWithZero = /^0/,
+  negs = /-{1,}$/ 
 
 class App extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class App extends React.Component {
 
   operatorClick(e) {
     const value = e.target.value;
-    const { current, formula, evaluated } = this.state;
+    const { prev, current, formula, evaluated } = this.state;
     if(evaluated) {
       this.setState({
         evaluated: false,
@@ -58,12 +59,14 @@ class App extends React.Component {
         current: value,
         formula: current + value
       })
-    } else if(endsWithOperator.test(formula)) {
-        this.setState({
-          prev: current,
-          current: value,
-          formula: (formula + current).slice(0, -2) + value
-        })
+    }  else if(endsWithOperator.test(formula)) {
+      this.setState({
+        prev: current,
+        current: value,
+        formula: !negs.test(formula + current) && value === "-" 
+          ? (formula).replace(negs, "-") + value
+          : (formula + current).slice(0, -2) + value
+      })
     } else {
         this.setState({
           prev: current,
@@ -166,3 +169,12 @@ class App extends React.Component {
 }
 
 export default App;
+
+/* 
+else if(endsWithOperator.test(formula)) {
+        this.setState({
+          prev: current,
+          current: value,
+          formula: (formula + current).slice(0, -2) + value
+        })
+*/

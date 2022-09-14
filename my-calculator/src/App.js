@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 
-const noMinus= /[*/+]/,
+const endsManyOps = /\d[x/+‑]{1}$/,
+  isOp = /[*+/-]/,
   endsWithOperator = /[*+/-]$/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   startsWithZero = /^0/,
@@ -51,7 +52,7 @@ class App extends React.Component {
 
   operatorClick(e) {
     const value = e.target.value;
-    const { prev, current, formula, evaluated } = this.state;
+    const { current, formula, evaluated } = this.state;
     if(evaluated) {
       this.setState({
         evaluated: false,

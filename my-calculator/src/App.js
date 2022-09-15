@@ -6,6 +6,7 @@ const notZero = /[1-9]+/,
   endsWithOperator = /[*+/-]$/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   startsWithZero = /^0/,
+  startsWithZeroPoint = /^0\.\d+/,
   endsWithDecimal = /.$/,
   endsWithDecNumber = /\.(\d*)$/, 
   negs = /-{1,}$/ 
@@ -38,12 +39,11 @@ class App extends React.Component {
         current: value,
         formula: value
       })
-    } else if (endsWithDecimal.test(current)){
-      this.setState({
-        current: current + value,
-        formula: formula + value
-      })
-      
+    } else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
+        this.setState({
+          current: isOp.test(current) ? value : current + value,
+          formula: formula + value
+        })
     } else if(!endsWithOperator.test(current)) {
       this.setState({
         previous: current,
@@ -54,7 +54,6 @@ class App extends React.Component {
       })
     } else {
       this.setState({
-        previous: current,
         current: value,
         formula: formula + value
       })
@@ -64,11 +63,17 @@ class App extends React.Component {
   zeroClick(e) {
     let value = e.target.value;
     const { current, formula } = this.state;
+    if(endsWithOperator.test(formula)){
       this.setState({
-        previous: current,
+        current: value,
+
+      })
+    } else {
+      this.setState({
         current: startsWithZero.test(current) ? value : current + value,
         formula: startsWithZero.test(formula) ? formula.replace(/^[0]+/, "0") : formula + value
       })
+    }
   }
 
   operatorClick(e){
@@ -83,21 +88,26 @@ class App extends React.Component {
   decimalClick(e){
     let value = e.target.value;
     const { current, formula } = this.state;
-    if(current === "0" || formula === ""){
+    if(current === "0" && formula === ""){
       this.setState({
         current: "0" + value,
-        formula: "0" + value
+        formula: current + value
       })
     } else if(endsWithDecNumber.test(formula)){
-      this.setState({
-        current: current.includes(".") ? current : current + value,
-        formula: formula
-      })
+        this.setState({
+          current: current.includes(".") ? current : current + value,
+          formula: formula
+        })
+    } else if (endsWithOperator.test(formula)){
+        this.setState({
+          current: "0" + value,
+          formula: formula + "0" + value
+        })
     } else {
-      this.setState({
-      current: current.includes(".") ? current : current + value,
-      formula: !formula.endsWith(".") ? formula + value : formula
-    })
+        this.setState({
+          current: current.includes(".") ? current : current + value,
+          formula: !formula.endsWith(".") ? formula + value : formula
+        })
     }
   }
     /*this.setState({
@@ -120,7 +130,7 @@ class App extends React.Component {
       expression = expression.slice(0, -1);
     }
       // eslint-disable-next-line
-      let answer = eval(expression);
+      let answer = Math.round(1000000000000 * eval(expression)) / 1000000000000;
       this.setState({
         current: answer.toString(),
         formula: expression + " = " + answer,

@@ -7,7 +7,7 @@ const notZero = /[1-9]+/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   startsWithZero = /^0/,
   endsWithDecimal = /.$/,
-  endsWithDecNumber = /\d+\.\d*/, 
+  endsWithDecNumber = /\.(\d*)$/, 
   negs = /-{1,}$/ 
 
 class App extends React.Component {
@@ -82,7 +82,11 @@ class App extends React.Component {
         current: "0" + value,
         formula: "0" + value
       })
-    
+    } else if(endsWithDecNumber.test(formula)){
+      this.setState({
+        current: current.includes(".") ? current : current + value,
+        formula: formula
+      })
     } else {
       this.setState({
       current: current.includes(".") ? current : current + value,

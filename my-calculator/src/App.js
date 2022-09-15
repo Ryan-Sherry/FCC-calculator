@@ -38,6 +38,12 @@ class App extends React.Component {
         current: value,
         formula: value
       })
+    } else if (endsWithDecimal.test(current)){
+      this.setState({
+        current: current + value,
+        formula: formula + value
+      })
+      
     } else if(!endsWithOperator.test(current)) {
       this.setState({
         previous: current,

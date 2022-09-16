@@ -8,9 +8,8 @@ const
   endsWithDecimal = /.$/,
   isDecNumber = /.\d*/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
-  
-  startsWithZeroPoint = /^0\.\d+/,
-  
+  startsWithZeroPoint = /^0\.\d*/,
+  endsWithZeroPoint = /0\.\d*$/,
   endsWithDecNumber = /\.(\d*)$/, 
   negs = /-{1,}$/ 
 
@@ -36,26 +35,26 @@ class App extends React.Component {
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
     if(evaluated) {
-      //replaces the last answer with the "value", displaying it in "current" and "formula" fields
+    //replaces the last answer with the "value", displaying it in "current" and "formula" fields
       this.setState({
         evaluated: false,
         current: value,
         formula: value
       })
     } else if(isOp.test(current)){
-        //replaces the operator displayed in "current" with the typed numbers, "current" added to "formula"
+      //replaces the operator displayed in "current" with the typed numbers, "current" added to "formula"
         this.setState({
           current: value,
           formula: formula + value
         })
     } else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
-        //allows numbers to be appended to decimals
+      //allows numbers to be appended to decimals
         this.setState({
           current: current + value,
           formula: formula + value
       })
     } else {
-        //if cleared or just loaded, places "value" in "current" and "formula" fields
+      //if cleared or just loaded, places "value" in "current" and "formula" fields
         this.setState({
           current: !startsWithZero.test(current) ? current + value : value,
           formula: startsWithZero.test(formula) 
@@ -69,19 +68,27 @@ class App extends React.Component {
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
     if(evaluated){
-      //allows 0 to be entered after previous answer, starting new calculation
+    //allows 0 to be entered after previous answer, starting new calculation
       this.setState({
         evaluated: false,
         current: value,
         formula: value
       })
-    } 
-    //need to sort out "ends with 0."
-    else if(endsWithOperator.test(formula)){
+    } else if(endsWithZeroPoint.test(current) && endsWithZeroPoint.test(formula)){
+      //allows calculation to start with "0.000000000" etc.
         this.setState({
-          current: isOp.test(current) ? value : current,
+          current: current + value,
+          formula: formula + value
+        })
+    } else if(isOp.test(current)){
+      //allows current number to start with "0."
+        this.setState({
+        //not actually sure how I got this to work, logically-speaking, but working as I would like
+        //"Unless (current+value) starts with 0., return (current minus operator) + 0. Otherwise return current"
+        current: !startsWithZeroPoint.test(current + value) ? current.slice(1,-1) + value : current,
       })
     } else {
+      //prevents next number from starting with more than one 0
       this.setState({
         current: startsWithZero.test(current) ? value : current + value,
         formula: startsWithZero.test(formula) ? formula.replace(/^[0]+/, "0") : formula + value
@@ -93,7 +100,7 @@ class App extends React.Component {
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
     if(evaluated){
-      //allows decimal to be entered after previous answer, starting new calculation with "0."
+    //allows decimal to be entered after previous answer, starting new calculation with "0."
       this.setState({
         evaluated: false,
         current: "0" + value,
@@ -101,28 +108,28 @@ class App extends React.Component {
       })
     } else if(current === "0" && formula === ""){
       //if decimal is first button clicked, displays "0." in both fields
-      this.setState({
-        current: current + value,
-        formula: current + value
-      })
+        this.setState({
+          current: current + value,
+          formula: current + value
+        })
     } else if(current.includes(".") && isDecNumber.test(formula)){
-        //prevents additional decimals after number (e.g. "1.2.1.""). Can also use "formula.endsWith(isDecNumber)"
+      //prevents additional decimals after number (e.g. "1.2.1.""). Can also use "formula.endsWith(isDecNumber)"
         this.setState({
           current: current,
           formula: formula
         })
       } else if (endsWithOperator.test(formula)){
         //if last clicked is operator, inserts a zero before the decimal in "current" and "formula"
-        this.setState({
-          current: "0" + value,
-          formula: formula + "0" + value
-        })
+          this.setState({
+            current: "0" + value,
+            formula: formula + "0" + value
+          })
     } else {
-        //prevents more than one decimal point from being added to "current" and "formula"
+      //prevents more than one decimal point from being added to "current" and "formula"
         this.setState({
-          //"if current contains a decimal, return only the current value. Otherwise return current + decimal"
+          //"If current contains a decimal, return only the current value. Otherwise return current + decimal"
           current: current.includes(".") ? current : current + value,
-          //"if formula does not end with a decimal, return formula + decimal. Otherwise, return only formula"
+          //"If formula does not end with a decimal, return formula + decimal. Otherwise, return only formula"
           formula: !formula.endsWith(".") ? formula + value : formula
         })
     }
@@ -138,7 +145,7 @@ class App extends React.Component {
   }
 
   allClear(){
-    //returns state to initial state
+  //returns state to initial state
     this.setState({
       current: "0",
       previous: "",

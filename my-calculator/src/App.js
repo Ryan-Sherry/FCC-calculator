@@ -9,10 +9,9 @@ const
   endsWithOperator = /[*+/-]$/,
   endsWithDecimal = /.$/,
   isDecNumber = /.\d*/,
-  endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   startsWithZeroPoint = /^0\.\d*/,
   endsWithZeroPoint = /0\.\d*$/,
-  endsWithDecNumber = /\.(\d*)$/, 
+  endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   negs = /-{1,}$/ 
 
 class App extends React.Component {
@@ -35,11 +34,27 @@ class App extends React.Component {
 
   operatorClick(e){
     let value = e.target.value;
-    const { current, formula } = this.state;
-    this.setState({
-      current: value,
-      formula: formula + value
-    })
+    const { current, formula, evaluated } = this.state;
+    if(evaluated){
+      this.setState({
+        current: value,
+        formula: current + value,
+        evaluated: false
+      })   
+    } /*
+    else if(endsWithOperator.test(formula)){
+      this.setState({
+        current: value,
+        formula: endsWithNegative(formula + current) ? 
+      })
+    }
+    */
+    else {
+        this.setState({
+          current: value,
+          formula: formula + value
+        })
+    }
   }
 
   numberClick(e){
@@ -55,7 +70,7 @@ class App extends React.Component {
     } else if(isOp.test(current)){
       //replaces the operator displayed in "current" with the typed numbers, "current" added to "formula"
         this.setState({
-          current: startsWithZero(current + value) + value,
+          current: value,
           formula: formula + value
         })
     } 

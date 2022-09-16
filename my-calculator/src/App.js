@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 
+//would like to finalize numberClick at some point (see comments at end of that function)
+
 const
   isOp = /[*+/-]/,
   startsWithZero = /^0/,
@@ -31,6 +33,15 @@ class App extends React.Component {
     
   }
 
+  operatorClick(e){
+    let value = e.target.value;
+    const { current, formula } = this.state;
+    this.setState({
+      current: value,
+      formula: formula + value
+    })
+  }
+
   numberClick(e){
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
@@ -44,10 +55,11 @@ class App extends React.Component {
     } else if(isOp.test(current)){
       //replaces the operator displayed in "current" with the typed numbers, "current" added to "formula"
         this.setState({
-          current: value,
+          current: startsWithZero(current + value) + value,
           formula: formula + value
         })
-    } else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
+    } 
+    else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
       //allows numbers to be appended to decimals
         this.setState({
           current: current + value,
@@ -62,6 +74,8 @@ class App extends React.Component {
           : formula + value
         })
     }
+    //would like to correct display when "022222" is pressed at start of calucation
+    //also "current" display error with same thing, but formula displays correctly
   }
 
   zeroClick(e) {
@@ -135,14 +149,7 @@ class App extends React.Component {
     }
   }
 
-  operatorClick(e){
-    let value = e.target.value;
-    const { current, formula } = this.state;
-    this.setState({
-      current: value,
-      formula: formula + value
-    })
-  }
+//operatorClick to go here, for the sake of my OCD
 
   allClear(){
   //returns state to initial state

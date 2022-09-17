@@ -11,7 +11,8 @@ const
   isDecNumber = /.\d*/,
   startsWithZeroPoint = /^0\.\d*/,
   endsWithZeroPoint = /0\.\d*$/,
-  endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
+  endsWithNegativeSign = /\d[*/+‑]{1}‑$/,
+  endsWithNotNeg = /[*/+]$/,
   negs = /-{1,}$/ 
 
 class App extends React.Component {
@@ -26,6 +27,7 @@ class App extends React.Component {
     this.zeroClick = this.zeroClick.bind(this);
     this.decimalClick = this.decimalClick.bind(this);
     this.operatorClick = this.operatorClick.bind(this);
+    this.minusClick = this.minusClick.bind(this);
     this.allClear = this.allClear.bind(this);
     this.percentage = this.percentage.bind(this);
     this.getAnswer = this.getAnswer.bind(this);
@@ -36,19 +38,54 @@ class App extends React.Component {
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
     if(evaluated){
+      //allows calculation to continue from previous answer
       this.setState({
         current: value,
         formula: current + value,
         evaluated: false
       })   
-    } /*
-    else if(endsWithOperator.test(formula)){
+    } else if(endsWithOperator.test(formula)){
+        this.setState({
+          current: value,
+          formula: (formula + current).slice(0, -2) + value
+        })
+    } /*else if(formula.endsWith(/(*-)$|(/-)$|(+-)$ /)){
+        this.setState({
+          current: value,
+          formula: formula.slice(0, -2) + value
+        })
+    }*/
+    
+    else {
+        this.setState({
+          current: value,
+          formula: formula + value
+        })
+    }
+  }
+
+  minusClick(e){
+    let value = e.target.value;
+    const { current, formula, evaluated } = this.state;
+    if(evaluated){
       this.setState({
         current: value,
-        formula: endsWithNegative(formula + current) ? 
+        formula: current + value,
+        evaluated: false
+      })   
+    } else if(endsWithOperator.test(formula)){
+      this.setState({
+        current: value,
+        formula: endsWithNotNeg.test(formula) ? formula + value : (formula + current).slice(0, -2) + value
       })
-    }
-    */
+    } /*
+    else if (!endsWithNegativeSign.test(formula)) {
+        this.setState({
+          formula:
+            (endsWithNegativeSign.test(formula) ? formula : formula.slice(0,-2)) +
+            value
+            */
+    
     else {
         this.setState({
           current: value,
@@ -233,7 +270,7 @@ class App extends React.Component {
                 <button onClick={this.numberClick} id="one" value={"1"}>1</button>
                 <button onClick={this.numberClick} id="two" value={"2"}>2</button>
                 <button onClick={this.numberClick} id="three" value={"3"}>3</button>
-                <button onClick={this.operatorClick} id="subtract" value={"-"}>-</button>
+                <button onClick={this.minusClick} id="subtract" value={"-"}>-</button>
               </div>
               <div id="row3">
                 <button onClick={this.decimalClick} id="decimal" value={"."}>.</button>

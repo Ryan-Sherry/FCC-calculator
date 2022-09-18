@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Ryan-Sherry.github.io/static/css/main.8e99de1b.css",
-    "main.js": "/Ryan-Sherry.github.io/static/js/main.d6fb77f2.js",
-    "static/media/KlqS3t.jpg": "/Ryan-Sherry.github.io/static/media/KlqS3t.34be5cbd759781e8cf98.jpg",
-    "index.html": "/Ryan-Sherry.github.io/index.html",
-    "main.8e99de1b.css.map": "/Ryan-Sherry.github.io/static/css/main.8e99de1b.css.map",
-    "main.d6fb77f2.js.map": "/Ryan-Sherry.github.io/static/js/main.d6fb77f2.js.map"
+    "main.css": "/Ryan-Sherry.github.io/FCC-calculator/static/css/main.1763702f.css",
+    "main.js": "/Ryan-Sherry.github.io/FCC-calculator/static/js/main.d6fb77f2.js",
+    "static/media/KlqS3t.jpg": "/Ryan-Sherry.github.io/FCC-calculator/static/media/KlqS3t.34be5cbd759781e8cf98.jpg",
+    "index.html": "/Ryan-Sherry.github.io/FCC-calculator/index.html",
+    "main.1763702f.css.map": "/Ryan-Sherry.github.io/FCC-calculator/static/css/main.1763702f.css.map",
+    "main.d6fb77f2.js.map": "/Ryan-Sherry.github.io/FCC-calculator/static/js/main.d6fb77f2.js.map"
   },
   "entrypoints": [
-    "static/css/main.8e99de1b.css",
+    "static/css/main.1763702f.css",
     "static/js/main.d6fb77f2.js"
   ]
 }

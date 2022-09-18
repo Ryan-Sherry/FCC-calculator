@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 
-/* Can only get project to pass 15/16 tests. Have spent 2 weeks trying variations of forumla compositions.
+/* Can only get project to pass 15/16 tests. Have spent 2 weeks trying variations of formula compositions.
+   operatorClick() has been the bane of my existence (see comments at the end of that function for details)
    Still pretty happy with the overall result.
-   Would like to finalize numberClick at some point (see comments at end of that function).
+   Would like to finalize numberClick at some point (see comments at end of that function for details).
    Time to move on with my life */
 
 const
@@ -172,6 +173,8 @@ class App extends React.Component {
         formula: formula + value
       })
     }
+    //Can't replace 2 consecutive operators with a third operator.
+    //Can't change 2 negative signs into a positive.
   }
 
 

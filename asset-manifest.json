@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Ryan-Sherry.github.io/FCC-calculator/static/css/main.1763702f.css",
-    "main.js": "/Ryan-Sherry.github.io/FCC-calculator/static/js/main.d6fb77f2.js",
-    "static/media/KlqS3t.jpg": "/Ryan-Sherry.github.io/FCC-calculator/static/media/KlqS3t.34be5cbd759781e8cf98.jpg",
-    "index.html": "/Ryan-Sherry.github.io/FCC-calculator/index.html",
-    "main.1763702f.css.map": "/Ryan-Sherry.github.io/FCC-calculator/static/css/main.1763702f.css.map",
-    "main.d6fb77f2.js.map": "/Ryan-Sherry.github.io/FCC-calculator/static/js/main.d6fb77f2.js.map"
+    "main.css": "/FCC-calculator/static/css/main.7491c791.css",
+    "main.js": "/FCC-calculator/static/js/main.d6fb77f2.js",
+    "static/media/KlqS3t.jpg": "/FCC-calculator/static/media/KlqS3t.34be5cbd759781e8cf98.jpg",
+    "index.html": "/FCC-calculator/index.html",
+    "main.7491c791.css.map": "/FCC-calculator/static/css/main.7491c791.css.map",
+    "main.d6fb77f2.js.map": "/FCC-calculator/static/js/main.d6fb77f2.js.map"
   },
   "entrypoints": [
-    "static/css/main.1763702f.css",
+    "static/css/main.7491c791.css",
     "static/js/main.d6fb77f2.js"
   ]
 }

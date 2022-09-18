@@ -1,7 +1,10 @@
 import React from 'react';
 import './App.css';
 
-//would like to finalize numberClick at some point (see comments at end of that function)
+/* Can only get project to pass 15/16 tests. Have spent 2 weeks trying variations of forumla compositions.
+   Still pretty happy with the overall result.
+   Would like to finalize numberClick at some point (see comments at end of that function).
+   Time to move on with my life */
 
 const
   isOp = /[*+/-]/,
@@ -31,50 +34,12 @@ class App extends React.Component {
     
   }
 
-  operatorClick(e){
-    let value = e.target.value;
-    const { current, formula, evaluated } = this.state;
-    if(evaluated){
-      this.setState({
-        current: value,
-        formula: current + value,
-        evaluated: false
-      })   
-    } else if(endsWithOperator.test(formula)){
-        if(endsWithNegativeSign.test(formula + value)){
-          this.setState({
-            current: value,
-            formula: formula.replace(endsWithNegativeSign, "") + value
-          })
-        } else {
-          this.setState({
-            current: value,
-            formula: formula.slice(0,-1) + value
-          })
-        }
-    }
-    
-    /*
-    else if(endsWithOperator.test(formula)){
-      this.setState({
-        current: value,
-        formula: endsWithNegative(formula + current) ? 
-      })
-    }
-    */
-    else {
-        this.setState({
-          current: value,
-          formula: formula + value
-        })
-    }
-  }
-
+  
   numberClick(e){
     let value = e.target.value;
     const { current, formula, evaluated } = this.state;
-    if(evaluated) {
-    //replaces the last answer with the "value", displaying it in "current" and "formula" fields
+    if(evaluated){
+      //replaces the last answer with the "value", displaying it in "current" and "formula" fields
       this.setState({
         evaluated: false,
         current: value,
@@ -82,25 +47,24 @@ class App extends React.Component {
       })
     } else if(isOp.test(current)){
       //replaces the operator displayed in "current" with the typed numbers, "current" added to "formula"
-        this.setState({
-          current: value,
-          formula: formula + value
-        })
-    } 
-    else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
+      this.setState({
+        current: value,
+        formula: formula + value
+      })
+    } else if(endsWithDecimal.test(current) && endsWithDecimal.test(formula)){
       //allows numbers to be appended to decimals
-        this.setState({
-          current: current + value,
-          formula: formula + value
+      this.setState({
+        current: current + value,
+        formula: formula + value
       })
     } else {
       //if cleared or just loaded, places "value" in "current" and "formula" fields
-        this.setState({
-          current: !startsWithZero.test(current) ? current + value : value,
-          formula: startsWithZero.test(formula) 
-          ? formula.slice(1,-1) + value
-          : formula + value
-        })
+      this.setState({
+        current: !startsWithZero.test(current) ? current + value : value,
+        formula: startsWithZero.test(formula) 
+        ? formula.slice(1,-1) + value
+        : formula + value
+      })
     }
     //would like to correct display when "022222" is pressed at start of calucation
     //also "current" display error with same thing, but formula displays correctly
@@ -118,16 +82,16 @@ class App extends React.Component {
       })
     } else if(endsWithZeroPoint.test(current) && endsWithZeroPoint.test(formula)){
       //allows calculation to start with "0.000000000" etc.
-        this.setState({
-          current: current + value,
-          formula: formula + value
-        })
+      this.setState({
+        current: current + value,
+        formula: formula + value
+      })
     } else if(isOp.test(current)){
       //allows current number to start with "0."
-        this.setState({
-        //not actually sure how I got this to work, logically-speaking, but working as I would like
-        //"Unless (current+value) starts with 0., return (current minus operator) + 0. Otherwise return current"
-        current: !startsWithZeroPoint.test(current + value) ? current.slice(1,-1) + value : current,
+      this.setState({
+      //not actually sure how I got this to work, logically-speaking, but working as I would like
+      //"Unless (current+value) starts with 0., return (current minus operator) + 0. Otherwise return current"
+      current: !startsWithZeroPoint.test(current + value) ? current.slice(1,-1) + value : current,
       })
     } else {
       //prevents next number from starting with more than one 0
@@ -150,34 +114,66 @@ class App extends React.Component {
       })
     } else if(current === "0" && formula === ""){
       //if decimal is first button clicked, displays "0." in both fields
-        this.setState({
-          current: current + value,
-          formula: current + value
-        })
+      this.setState({
+        current: current + value,
+        formula: current + value
+      })
     } else if(current.includes(".") && isDecNumber.test(formula)){
       //prevents additional decimals after number (e.g. "1.2.1.""). Can also use "formula.endsWith(isDecNumber)"
-        this.setState({
-          current: current,
-          formula: formula
-        })
+      this.setState({
+        current: current,
+        formula: formula
+      })
       } else if (endsWithOperator.test(formula)){
         //if last clicked is operator, inserts a zero before the decimal in "current" and "formula"
-          this.setState({
-            current: "0" + value,
-            formula: formula + "0" + value
-          })
+        this.setState({
+          current: "0" + value,
+          formula: formula + "0" + value
+        })
     } else {
       //prevents more than one decimal point from being added to "current" and "formula"
-        this.setState({
-          //"If current contains a decimal, return only the current value. Otherwise return current + decimal"
-          current: current.includes(".") ? current : current + value,
-          //"If formula does not end with a decimal, return formula + decimal. Otherwise, return only formula"
-          formula: !formula.endsWith(".") ? formula + value : formula
-        })
+      this.setState({
+        //"If current contains a decimal, return only the current value. Otherwise return current + decimal"
+        current: current.includes(".") ? current : current + value,
+        //"If formula does not end with a decimal, return formula + decimal. Otherwise, return only formula"
+        formula: !formula.endsWith(".") ? formula + value : formula
+      })
     }
   }
 
-//operatorClick to go here, for the sake of my OCD
+  operatorClick(e){
+    let value = e.target.value;
+    const { current, formula, evaluated } = this.state;
+    if(evaluated){
+    //allows new calculation to continue using answer from previous calculation
+      this.setState({
+        current: value,
+        formula: current + value,
+        evaluated: false
+      })   
+    } else if(endsWithOperator.test(formula)){
+        if(endsWithNegativeSign.test(formula + value)){
+        //attempts to replace the /[=*/]-$/ expression with only the last value entered
+          this.setState({
+            current: value,
+            formula: formula.replace(endsWithNegativeSign, "") + value
+          })
+        } else {
+        //allows for /[+*/]-/ to happed
+          this.setState({
+            current: value,
+            formula: formula.slice(0,-1) + value
+          })
+        }
+    } else {
+      //if formula ends in a number, appends the operator to the current formula
+      this.setState({
+        current: value,
+        formula: formula + value
+      })
+    }
+  }
+
 
   allClear(){
   //returns state to initial state
@@ -206,15 +202,15 @@ class App extends React.Component {
     while(endsWithOperator.test(expression)) {
       expression = expression.slice(0, -1);
     }
-      //corrects rounding errors of "answer" (borrowed from FCC example)
-      // eslint-disable-next-line
-      let answer = Math.round(1000000000000 * eval(expression)) / 1000000000000;
-      //converts answer to a string, so that "eval" can operate on it...
-      this.setState({
-        current: answer.toString(),
-        formula: expression + " = " + answer,
-        evaluated: true
-      })
+    //corrects rounding errors of "answer" (borrowed from FCC example)
+    // eslint-disable-next-line
+    let answer = Math.round(1000000000000 * eval(expression)) / 1000000000000;
+    //converts answer to a string, so that "eval" can operate on it...
+    this.setState({
+      current: answer.toString(),
+      formula: expression + " = " + answer,
+      evaluated: true
+    })
   }
 
   render() {
